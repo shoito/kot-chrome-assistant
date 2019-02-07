@@ -1,0 +1,30 @@
+{
+  "name": "MyレコーダーChromeアシスタント",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "description": "勤怠管理システム「Myレコーダー | KING OF TIME」を快適に使えるようにするためのChrome拡張です。",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "ja",
+  "browser_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "MyレコーダーChromeアシスタント",
+    "default_popup": "src/browser_action/browser_action.html"
+  },
+  "permissions": [
+    "https://s2.kingtime.jp/independent/recorder/personal/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://s2.kingtime.jp/independent/recorder/personal/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ]
+    }
+  ]
+}
