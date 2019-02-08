@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="vendor/css/bulma.min.css" />
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+<div>
+
+    <nav class="navbar is-white">
+        <div class="container">
+            <div class="navbar-brand">
+                <span class="navbar-item brand-text" href="../">MyレコーダーChromeアシスタント</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="columns">
+            <!-- Side -->
+            <div class="column is-3">
+                <aside class="menu">
+                    <p class="menu-label">サービス連携</p>
+                    <ul class="menu-list">
+                        <li><a class="is-active">Slack通知</a></li>
+                    </ul>
+                </aside>
+            </div>
+
+            <!-- Main -->
+            <div class="column is-9">
+                <h4>Slack通知</h4>
+                <div id="slack-notification-settings" class="box">
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="checkbox">
+                            <input id="slackEnabled" type="checkbox">有効にする
+                        </label>
+                    </div>
+                    <div class="field-body">
+                        <!-- right empty for spacing -->
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">チャンネル</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackChannel" class="input" type="text" placeholder="e.g. #attendance">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">出勤メッセージ</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackClockInMessage" class="input" type="text" placeholder="e.g. 出社しました。">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">退勤メッセージ</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackClockOutMessage" class="input" type="text" placeholder="e.g. 退社します。">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label">
+                        <!-- Left empty for spacing -->
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="slackApiType" value="asUser" checked>ユーザーとして通知する
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="slackApiType" value="IncomingWebHooks">Incoming WebHooksに通知する
+                            </label>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Token</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackToken" class="input" type="password" placeholder="e.g. xoxp-xxx-xxx-xxx-xxx">
+                        </div>
+                        <p class="help">ユーザーとしてメッセージ通知する場合に入力します。chat:write:userのパーミッションが必要です。</p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">WebHooks URL</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackWebHooksUrl" class="input" type="text" placeholder="e.g. https://hooks.slack.com/services/XXX/XXX/XXX">
+                        </div>
+                        <p class="help">Incoming WebHooksにメッセージ通知する場合に入力します。</p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label">
+                        <!-- Left empty for spacing -->
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <a id="slackApply" class="button is-link">適用</a>
+                            <a id="slackTest" class="button">テスト送信</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
