@@ -13,5 +13,9 @@ https://chrome.google.com/webstore/detail/pifbdpooppfkllaiobkaoeocbfmpabaj/
 次のアクションを分かりやすくして、2重に出勤や退勤をしてしまう誤操作を予防します。
 ![Content Scripts](docs/images/content-scripts-clockout.png)
 
-## 今後の実装予定
-- 出勤や退勤、休憩開始、休憩終了などの操作をした際にSlackへメッセージ投稿する機能(Incoming Webhook)
+## 出勤、退勤時のSlackメッセージ通知
+設定したSlackチャンネルに対して、以下のようなメッセージが送られるようにできます。  
+メッセージやチャンネルはカスタマイズ可能です。
+
+- 出勤ボタン押下時に「出社しました。」
+- 退勤ボタン押下時に「退社します。」
