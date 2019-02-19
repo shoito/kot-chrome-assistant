@@ -1,4 +1,7 @@
 (() => {
+  const CLOCK_IN = 'clockIn', CLOCK_OUT = 'clockOut';
+
+  // Message
   let slackEnabled = false,
       slackChannel = '',
       slackClockInMessage = '',
@@ -6,6 +9,14 @@
       slackApiType = 'asUser',
       slackToken = '',
       slackWebHooksUrl = '';
+
+  // Status
+  let slackStatusEnabled = false,
+      slackClockInStatusEmoji = '',
+      slackClockInStatusText = '',
+      slackClockOutStatusEmoji = '',
+      slackClockOutStatusText = '',
+      slackStatusToken = '';
 
   const now = new Date(),
       today = [now.getFullYear(), now.getMonth() + 1, now.getDate()].map(d=>d.toString().padStart(2, '0')).join(''),
@@ -22,33 +33,65 @@
           clockInButtonId = setting.timerecorder.record_button.filter(b => b.mark === '1')[0].id,
           clockOutButtonId = setting.timerecorder.record_button.filter(b => b.mark === '2')[0].id;
 
-    if (slackEnabled) {
+    if (slackEnabled || slackStatusEnabled) {
       document.getElementById('record_' + clockInButtonId).addEventListener('click', clockIn, false);
       document.getElementById('record_' + clockOutButtonId).addEventListener('click', clockOut, false);
       console.log('Content Scripts is injected by KoT Chrome Assistant.');
+
+      // for debug
+      // document.querySelector('footer').innerHTML = '<button id="testClockIn">TestClockIn</button><button id="testClockOut">TestClockOut</button>'
+      // document.getElementById('testClockIn').addEventListener('click', clockIn, false);
+      // document.getElementById('testClockOut').addEventListener('click', clockOut, false);
     }
   }, 600);
 
   chrome.storage.sync.get([
+    // Message
     "slackEnabled",
     "slackChannel",
     "slackClockInMessage",
     "slackClockOutMessage",
+    "slackApiType",
     "slackToken",
-    "slackWebHooksUrl"
+    "slackWebHooksUrl",
+
+    // Status
+    "slackStatusEnabled",
+    "slackClockInStatusEmoji",
+    "slackClockInStatusText",
+    "slackClockOutStatusEmoji",
+    "slackClockOutStatusText",
+    "slackStatusToken"
   ], (items) => {
+    // Message
     slackEnabled = items.slackEnabled;
     slackChannel = items.slackChannel;
     slackClockInMessage = items.slackClockInMessage;
     slackClockOutMessage = items.slackClockOutMessage;
     slackToken = items.slackToken;
     slackWebhooksUrl = items.slackWebhooksUrl;
+
+    // Status
+    slackStatusEnabled = items.slackStatusEnabled;
+    slackClockInStatusEmoji = items.slackClockInStatusEmoji;
+    slackClockInStatusText = items.slackClockInStatusText;
+    slackClockOutStatusEmoji = items.slackClockOutStatusEmoji;
+    slackClockOutStatusText = items.slackClockOutStatusText;
+    slackStatusToken = items.slackStatusToken;
   });
 
-  const clockIn = () => postMessage(slackClockInMessage),
-        clockOut = () => postMessage(slackClockOutMessage);
+  const clockIn = () => {
+          postMessage(slackClockInMessage);
+          changeStatus(CLOCK_IN)
+        },
+        clockOut = () => {
+          postMessage(slackClockOutMessage);
+          changeStatus(CLOCK_OUT)
+        };
 
   const postMessage = (message) => {
+    if (!slackEnabled) return;
+
     const headers = {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
@@ -58,20 +101,54 @@
       'text': message
     };
 
-    if (slackEnabled) {
-      let endpoint = slackWebHooksUrl;
-      if (slackApiType === 'asUser') {
-          endpoint = 'https://slack.com/api/chat.postMessage';
-          headers['Authorization'] = 'Bearer ' + slackToken;
-          payload['as_user'] = true;
-      }
-      fetch(endpoint, {
-        'method': 'POST',
-        'headers': headers,
-        'body': JSON.stringify(payload)
-      })
-      .then(console.log)
-      .catch(console.error);
+    let endpoint = slackWebHooksUrl;
+    if (slackApiType === 'asUser') {
+        endpoint = 'https://slack.com/api/chat.postMessage';
+        headers['Authorization'] = 'Bearer ' + slackToken;
+        payload['as_user'] = true;
     }
+    fetch(endpoint, {
+      'method': 'POST',
+      'headers': headers,
+      'body': JSON.stringify(payload)
+    })
+    .then(console.log)
+    .catch(console.error);
   };
+
+  const changeStatus = (status) => {
+    if (!slackStatusEnabled) return;
+
+    let statusEmoji = '', statusText = ''
+    if (status === CLOCK_IN) {
+      statusEmoji = slackClockInStatusEmoji;
+      statusText = slackClockInStatusText;
+    } else if (status === CLOCK_OUT) {
+      statusEmoji = slackClockOutStatusEmoji;
+      statusText = slackClockOutStatusText;
+    }
+
+    const headers = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': 'Bearer ' + slackStatusToken
+    },
+    payload = {
+      'profile': {
+        'status_emoji': statusEmoji,
+        'status_text': statusText,
+        'status_expiration': 0
+      }
+    };
+
+    let endpoint = 'https://slack.com/api/users.profile.set';
+
+    fetch(endpoint, {
+      'method': 'POST',
+      'headers': headers,
+      'body': JSON.stringify(payload)
+    })
+    .then(console.log)
+    .catch(console.error);
+  }
 })();

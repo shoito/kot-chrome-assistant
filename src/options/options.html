@@ -32,7 +32,7 @@
 
             <!-- Main -->
             <div class="column is-9">
-                <h4>Slack通知</h4>
+                <h4>Slackメッセージ通知</h4>
                 <div id="slack-notification-settings" class="box">
 
                     <div class="field is-horizontal">
@@ -140,6 +140,124 @@
                         <div class="control">
                             <a id="slackApply" class="button is-link">適用</a>
                             <a id="slackTest" class="button">テスト送信</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                </div>
+
+
+                <h4>Slackステータス更新</h4>
+                <div id="slack-status-settings" class="box">
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="checkbox">
+                            <input id="slackStatusEnabled" type="checkbox">有効にする
+                        </label>
+                    </div>
+                    <div class="field-body">
+                        <!-- right empty for spacing -->
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label>出勤ステータス</label>
+                    </div>
+                    <div class="field-body">
+                        <!-- right empty for spacing -->
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">絵文字</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackClockInStatusEmoji" class="input" type="text" placeholder="e.g. :house:">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">テキスト</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackClockInStatusText" class="input" type="text" placeholder="e.g. リモートワーク中" maxlength="100">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label>退勤ステータス</label>
+                    </div>
+                    <div class="field-body">
+                        <!-- right empty for spacing -->
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">絵文字</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackClockOutStatusEmoji" class="input" type="text" placeholder="e.g. :sleeping:">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">テキスト</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackClockOutStatusText" class="input" type="text" placeholder="e.g. プライベートタイム" maxlength="100">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Token</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <input id="slackStatusToken" class="input" type="password" placeholder="e.g. xoxp-xxx-xxx-xxx-xxx">
+                        </div>
+                        <p class="help">メッセージ通知と同じトークンでかまいません。users.profile:writeのパーミッションが必要です。<a target="blank" href="https://github.com/shoito/kot-chrome-assistant/wiki/Slack%E9%80%A3%E6%90%BA%E3%81%AE%E8%A8%AD%E5%AE%9A">トークンの取得方法</a></p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                    <div class="field-label">
+                        <!-- Left empty for spacing -->
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                        <div class="control">
+                            <a id="slackStatusApply" class="button is-link">適用</a>
+                            <a id="slackStatusTest" class="button">テスト送信</a>
                         </div>
                         </div>
                     </div>
