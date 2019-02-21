@@ -50,6 +50,8 @@ const applySlackStatusOptions = () => {
 
 const restoreSlackOptions = () => {
   chrome.storage.sync.get([
+    "debuggable",
+
     // Message
     "slackEnabled",
     "slackChannel",
@@ -67,6 +69,8 @@ const restoreSlackOptions = () => {
     "slackClockOutStatusText",
     "slackStatusToken"
   ], (items) => {
+    document.getElementById('debuggable').checked = items.debuggable;
+
     document.getElementById('slackEnabled').checked = items.slackEnabled;
     document.getElementById('slackChannel').value = items.slackChannel ? items.slackChannel : "";
     document.getElementById('slackClockInMessage').value = items.slackClockInMessage ? items.slackClockInMessage : "";
@@ -117,6 +121,7 @@ const postToSlack = () => {
     'headers': headers,
     'body': JSON.stringify(payload)
   })
+  .then((res) => res.json())
   .then(console.log)
   .catch(console.error)
   .finally(() => {
@@ -155,6 +160,7 @@ const changeStatus = () => {
     'headers': headers,
     'body': JSON.stringify(payload)
   })
+  .then((res) => res.json())
   .then(console.log)
   .catch(console.error)
   .finally(() => {
@@ -169,3 +175,7 @@ document.getElementById('slackTest').addEventListener('click', postToSlack);
 
 document.getElementById('slackStatusApply').addEventListener('click', applySlackStatusOptions);
 document.getElementById('slackStatusTest').addEventListener('click', changeStatus);
+
+document.getElementById('debuggable').addEventListener('click', () => {
+  chrome.storage.sync.set({debuggable: document.getElementById('debuggable').checked});
+});
