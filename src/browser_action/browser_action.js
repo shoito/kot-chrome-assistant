@@ -3,9 +3,5 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     document.getElementById('notice').innerHTML = '<div class="notification is-info"><a href="https://s2.kingtime.jp/independent/recorder/personal/" target="blank">Myレコーダー</a>から事前のログインとページの再読み込みをしてください。</div>'
   }
 
-//   setTimeout(() => {
-//     chrome.tabs.create({url: 'https://s2.kingtime.jp/independent/recorder/personal/'});
-//   }, 3000);
-
   sendResponse(true);
 });
