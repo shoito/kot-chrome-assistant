@@ -102,7 +102,7 @@
     "slackClockInStatusText",
     "slackClockOutStatusEmoji",
     "slackClockOutStatusText",
-    "slackTakeABreaktatusEmoji",
+    "slackTakeABreakStatusEmoji",
     "slackTakeABreakStatusText",
     "slackStatusToken"
   ], (items) => {
