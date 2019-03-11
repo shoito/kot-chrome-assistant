@@ -3,6 +3,8 @@ const applySlackOptions = () => {
         slackChannel = document.getElementById('slackChannel').value,
         slackClockInMessage = document.getElementById('slackClockInMessage').value,
         slackClockOutMessage = document.getElementById('slackClockOutMessage').value,
+        slackTakeABreakMessage = document.getElementById('slackTakeABreakMessage').value,
+        slackBreakIsOverMessage = document.getElementById('slackBreakIsOverMessage').value,
         slackApiType = document.querySelector('[name=slackApiType]:checked').value,
         slackToken = document.getElementById('slackToken').value,
         slackWebHooksUrl = document.getElementById('slackWebHooksUrl').value;
@@ -12,6 +14,8 @@ const applySlackOptions = () => {
     slackChannel: slackChannel,
     slackClockInMessage: slackClockInMessage,
     slackClockOutMessage: slackClockOutMessage,
+    slackTakeABreakMessage: slackTakeABreakMessage,
+    slackBreakIsOverMessage: slackBreakIsOverMessage,
     slackApiType: slackApiType,
     slackToken: slackToken,
     slackWebHooksUrl: slackWebHooksUrl
@@ -30,6 +34,8 @@ const applySlackStatusOptions = () => {
         slackClockInStatusText = document.getElementById('slackClockInStatusText').value,
         slackClockOutStatusEmoji = document.getElementById('slackClockOutStatusEmoji').value,
         slackClockOutStatusText = document.getElementById('slackClockOutStatusText').value,
+        slackTakeABreakStatusEmoji = document.getElementById('slackTakeABreakStatusEmoji').value,
+        slackTakeABreakStatusText = document.getElementById('slackTakeABreakStatusText').value,
         slackStatusToken = document.getElementById('slackStatusToken').value;
 
   chrome.storage.sync.set({
@@ -38,6 +44,8 @@ const applySlackStatusOptions = () => {
     slackClockInStatusText: slackClockInStatusText,
     slackClockOutStatusEmoji: slackClockOutStatusEmoji,
     slackClockOutStatusText: slackClockOutStatusText,
+    slackTakeABreakStatusEmoji: slackTakeABreakStatusEmoji,
+    slackTakeABreakStatusText: slackTakeABreakStatusText,
     slackStatusToken: slackStatusToken,
   }, () => {
     const button = document.getElementById('slackStatusApply');
@@ -57,6 +65,8 @@ const restoreSlackOptions = () => {
     "slackChannel",
     "slackClockInMessage",
     "slackClockOutMessage",
+    "slackTakeABreakMessage",
+    "slackBreakIsOverMessage",
     "slackApiType",
     "slackToken",
     "slackWebHooksUrl",
@@ -67,6 +77,8 @@ const restoreSlackOptions = () => {
     "slackClockInStatusText",
     "slackClockOutStatusEmoji",
     "slackClockOutStatusText",
+    "slackTakeABreakStatusEmoji",
+    "slackTakeABreakStatusText",
     "slackStatusToken"
   ], (items) => {
     document.getElementById('debuggable').checked = items.debuggable;
@@ -75,6 +87,8 @@ const restoreSlackOptions = () => {
     document.getElementById('slackChannel').value = items.slackChannel ? items.slackChannel : "";
     document.getElementById('slackClockInMessage').value = items.slackClockInMessage ? items.slackClockInMessage : "";
     document.getElementById('slackClockOutMessage').value = items.slackClockOutMessage ? items.slackClockOutMessage: "";
+    document.getElementById('slackTakeABreakMessage').value = items.slackTakeABreakMessage ? items.slackTakeABreakMessage : "";
+    document.getElementById('slackBreakIsOverMessage').value = items.slackBreakIsOverMessage ? items.slackBreakIsOverMessage: "";
     items.slackApiType !== 'asUser' ? document.querySelector('[name=slackApiType][value=IncomingWebHooks]').checked = true : document.querySelector('[name=slackApiType][value=asUser]').checked = true
     document.getElementById('slackToken').value = items.slackToken ? items.slackToken : "";
     document.getElementById('slackWebHooksUrl').value = items.slackWebHooksUrl ? items.slackWebHooksUrl : "";
@@ -84,6 +98,8 @@ const restoreSlackOptions = () => {
     document.getElementById('slackClockInStatusText').value = items.slackClockInStatusText ? items.slackClockInStatusText : "";
     document.getElementById('slackClockOutStatusEmoji').value = items.slackClockOutStatusEmoji ? items.slackClockOutStatusEmoji: "";
     document.getElementById('slackClockOutStatusText').value = items.slackClockOutStatusText ? items.slackClockOutStatusText: "";
+    document.getElementById('slackTakeABreakStatusEmoji').value = items.slackTakeABreakStatusEmoji ? items.slackTakeABreakStatusEmoji: "";
+    document.getElementById('slackTakeABreakStatusText').value = items.slackTakeABreakStatusText ? items.slackTakeABreakStatusText: "";
     document.getElementById('slackStatusToken').value = items.slackStatusToken ? items.slackStatusToken: "";
   });
 }
@@ -93,6 +109,8 @@ const postToSlack = () => {
         slackChannel = document.getElementById('slackChannel').value,
         slackClockInMessage = document.getElementById('slackClockInMessage').value,
         slackClockOutMessage = document.getElementById('slackClockOutMessage').value,
+        slackTakeABreakMessage = document.getElementById('slackTakeABreakMessage').value,
+        slackBreakIsOverMessage = document.getElementById('slackBreakIsOverMessage').value,
         slackApiType = document.querySelector('[name=slackApiType]:checked').value,
         slackToken = document.getElementById('slackToken').value,
         slackWebHooksUrl = document.getElementById('slackWebHooksUrl').value;
@@ -135,6 +153,8 @@ const changeStatus = () => {
         slackClockInStatusText = document.getElementById('slackClockInStatusText').value,
         slackClockOutStatusEmoji = document.getElementById('slackClockOutStatusEmoji').value,
         slackClockOutStatusText = document.getElementById('slackClockOutStatusText').value,
+        slackTakeABreakStatusEmoji = document.getElementById('slackTakeABreakStatusEmoji').value,
+        slackTakeABreakStatusText = document.getElementById('slackTakeABreakStatusText').value,
         slackStatusToken = document.getElementById('slackStatusToken').value;
 
   const headers = {

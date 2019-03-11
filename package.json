@@ -1,0 +1,21 @@
+{
+  "name": "kot-chrome-assistant",
+  "version": "1.0.0",
+  "description": "Chromeウェブストア - MyレコーダーChromeアシスタント・ページ https://chrome.google.com/webstore/detail/pifbdpooppfkllaiobkaoeocbfmpabaj/",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "zip": "zip -r kot-chrome-assistant.zip . -x *.git* -x docs/**/* -x *.zip"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shoito/kot-chrome-assistant.git"
+  },
+  "author": "@shoito",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shoito/kot-chrome-assistant/issues"
+  },
+  "homepage": "https://github.com/shoito/kot-chrome-assistant#readme"
+}
