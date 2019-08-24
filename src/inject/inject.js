@@ -155,26 +155,31 @@
     const headers = {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
-    },
-    payload = {
-      'channel': slackChannel,
-      'text': message
     };
 
-    let endpoint = slackWebHooksUrl;
-    if (slackApiType === 'asUser') {
-        endpoint = 'https://slack.com/api/chat.postMessage';
-        headers['Authorization'] = 'Bearer ' + slackToken;
-        payload['as_user'] = true;
-    }
-    fetch(endpoint, {
-      'method': 'POST',
-      'headers': headers,
-      'body': JSON.stringify(payload)
-    })
-    .then((res) => res.json())
-    .then(console.log)
-    .catch(console.error);
+    // Multiple channel post support
+    // For example, #ch1 #ch2 #ch3
+    [...new Set(slackChannel.split(' '))].forEach(c => {
+      const payload = {
+        'channel': c,
+        'text': message
+      };
+
+      let endpoint = slackWebHooksUrl;
+      if (slackApiType === 'asUser') {
+          endpoint = 'https://slack.com/api/chat.postMessage';
+          headers['Authorization'] = 'Bearer ' + slackToken;
+          payload['as_user'] = true;
+      }
+      fetch(endpoint, {
+        'method': 'POST',
+        'headers': headers,
+        'body': JSON.stringify(payload)
+      })
+      .then((res) => res.json())
+      .then(console.log)
+      .catch(console.error);
+    });
   };
 
   const changeStatus = (status) => {
