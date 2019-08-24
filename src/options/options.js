@@ -118,32 +118,37 @@ const postToSlack = () => {
   const headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Access-Control-Allow-Origin': '*'
-  },
-  payload = {
-    'channel': slackChannel,
-    'text': slackClockInMessage ? slackClockInMessage : 'テスト'
   };
 
-  let endpoint = slackWebHooksUrl;
-  if (slackApiType === 'asUser') {
-    endpoint = 'https://slack.com/api/chat.postMessage';
-    headers['Authorization'] = 'Bearer ' + slackToken;
-    payload['as_user'] = true;
-  }
+  // Multiple channel post support
+  // For example, #ch1 #ch2 #ch3
+  [...new Set(slackChannel.split(' '))].forEach(c => {
+    const payload = {
+      'channel': c,
+      'text': slackClockInMessage ? slackClockInMessage : 'テスト'
+    };
 
-  const button = document.getElementById('slackTest');
-  button.classList.add("is-loading")
+    let endpoint = slackWebHooksUrl;
+    if (slackApiType === 'asUser') {
+      endpoint = 'https://slack.com/api/chat.postMessage';
+      headers['Authorization'] = 'Bearer ' + slackToken;
+      payload['as_user'] = true;
+    }
 
-  fetch(endpoint, {
-    'method': 'POST',
-    'headers': headers,
-    'body': JSON.stringify(payload)
-  })
-  .then((res) => res.json())
-  .then(console.log)
-  .catch(console.error)
-  .finally(() => {
-    button.classList.remove("is-loading")
+    const button = document.getElementById('slackTest');
+    button.classList.add("is-loading")
+
+    fetch(endpoint, {
+      'method': 'POST',
+      'headers': headers,
+      'body': JSON.stringify(payload)
+    })
+    .then((res) => res.json())
+    .then(console.log)
+    .catch(console.error)
+    .finally(() => {
+      button.classList.remove("is-loading")
+    });
   });
 }
 
