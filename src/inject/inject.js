@@ -56,8 +56,8 @@
 
     clearInterval(interval);
 
-    if (isClockedIn) clockInButton.style.opacity = 0.3;
-    if (isClockedOut) clockOutButton.style.opacity = 0.3;
+    if (isClockedIn) clockInButton.style.opacity = 0.5;
+    if (isClockedOut || !isClockedIn) clockOutButton.style.opacity = 0.5;
 
     const buttons = setting.timerecorder.record_button,
           clockInButtonId = buttons.filter(b => b.mark === '1')[0].id,
