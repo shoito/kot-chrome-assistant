@@ -35,6 +35,8 @@
       slackTakeABreakStatusText = '',
       slackStatusToken = '';
 
+  let slackSnoozeEnabled = false;
+
   const now = new Date(),
       today = [now.getFullYear(), now.getMonth() + 1, now.getDate()].map(d => d.toString().padStart(2, '0')).join(''),
       todayHistoryItem = localStorage.getItem('PARSONAL_BROWSER_RECORDER@RECORD_HISTORY_' + setting.user.user_token),
@@ -104,7 +106,10 @@
     "slackClockOutStatusText",
     "slackTakeABreakStatusEmoji",
     "slackTakeABreakStatusText",
-    "slackStatusToken"
+    "slackStatusToken",
+
+    // Snooze
+    "slackSnoozeEnabled"
   ], (items) => {
     debuggable = items.debuggable;
 
@@ -127,6 +132,9 @@
     slackTakeABreakStatusEmoji = items.slackTakeABreakStatusEmoji;
     slackTakeABreakStatusText = items.slackTakeABreakStatusText;
     slackStatusToken = items.slackStatusToken;
+
+    // Snooze
+    slackSnoozeEnabled = items.slackSnoozeEnabled;
   });
 
   const clockIn = () => {
@@ -223,5 +231,48 @@
     .then((res) => res.json())
     .then(console.log)
     .catch(console.error);
-  }
+  };
+
+  const setSnooze = () => {
+    if (!slackSnoozeEnabled) return;
+
+    let endpoint = 'https://slack.com/api/dnd.setSnooze';
+
+    const payload = {
+      token: slackStatusToken,
+      num_minutes: 8 * 60
+    };
+
+    const body = Object.keys(payload).map((key) => key + '=' + encodeURIComponent(payload[key])).join('&');
+    fetch(endpoint, {
+      'method': 'GET',
+      'headers': {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json',
+      },
+      'body': body
+    })
+    .then((res) => res.json())
+    .then(console.log)
+    .catch(console.error);
+  };
+
+  const endSnooze = () => {
+    if (!slackSnoozeEnabled) return;
+
+    let endpoint = 'https://slack.com/api/dnd.endSnooze';
+
+    fetch(endpoint, {
+      'method': 'POST',
+      'headers': {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer ' + slackStatusToken
+      }
+    })
+    .then((res) => res.json())
+    .then(console.log)
+    .catch(console.error);
+  };
 })();
