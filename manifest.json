@@ -35,6 +35,15 @@
         "src/inject/inject.js"
       ],
       "all_frames": true
+    },
+    {
+      "matches": [
+        "https://s2.kingtime.jp/admin/*"
+      ],
+      "js": [
+        "src/inject/stats.js"
+      ],
+      "all_frames": true
     }
   ],
   "background": {
