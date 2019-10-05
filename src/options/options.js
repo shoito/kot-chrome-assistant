@@ -21,9 +21,9 @@ const applySlackOptions = () => {
     slackWebHooksUrl: slackWebHooksUrl
   }, () => {
     const button = document.getElementById('slackApply');
-    button.classList.add("is-loading")
+    button.classList.add('is-loading')
     setTimeout(() => {
-      button.classList.remove("is-loading")
+      button.classList.remove('is-loading')
     }, 750);
   });
 }
@@ -49,58 +49,58 @@ const applySlackStatusOptions = () => {
     slackStatusToken: slackStatusToken,
   }, () => {
     const button = document.getElementById('slackStatusApply');
-    button.classList.add("is-loading")
+    button.classList.add('is-loading')
     setTimeout(() => {
-      button.classList.remove("is-loading")
+      button.classList.remove('is-loading')
     }, 750);
   });
 }
 
 const restoreSlackOptions = () => {
   chrome.storage.sync.get([
-    "debuggable",
+    'debuggable',
 
     // Message
-    "slackEnabled",
-    "slackChannel",
-    "slackClockInMessage",
-    "slackClockOutMessage",
-    "slackTakeABreakMessage",
-    "slackBreakIsOverMessage",
-    "slackApiType",
-    "slackToken",
-    "slackWebHooksUrl",
+    'slackEnabled',
+    'slackChannel',
+    'slackClockInMessage',
+    'slackClockOutMessage',
+    'slackTakeABreakMessage',
+    'slackBreakIsOverMessage',
+    'slackApiType',
+    'slackToken',
+    'slackWebHooksUrl',
 
     // Status
-    "slackStatusEnabled",
-    "slackClockInStatusEmoji",
-    "slackClockInStatusText",
-    "slackClockOutStatusEmoji",
-    "slackClockOutStatusText",
-    "slackTakeABreakStatusEmoji",
-    "slackTakeABreakStatusText",
-    "slackStatusToken"
+    'slackStatusEnabled',
+    'slackClockInStatusEmoji',
+    'slackClockInStatusText',
+    'slackClockOutStatusEmoji',
+    'slackClockOutStatusText',
+    'slackTakeABreakStatusEmoji',
+    'slackTakeABreakStatusText',
+    'slackStatusToken'
   ], (items) => {
     document.getElementById('debuggable').checked = items.debuggable;
 
     document.getElementById('slackEnabled').checked = items.slackEnabled;
-    document.getElementById('slackChannel').value = items.slackChannel ? items.slackChannel : "";
-    document.getElementById('slackClockInMessage').value = items.slackClockInMessage ? items.slackClockInMessage : "";
-    document.getElementById('slackClockOutMessage').value = items.slackClockOutMessage ? items.slackClockOutMessage: "";
-    document.getElementById('slackTakeABreakMessage').value = items.slackTakeABreakMessage ? items.slackTakeABreakMessage : "";
-    document.getElementById('slackBreakIsOverMessage').value = items.slackBreakIsOverMessage ? items.slackBreakIsOverMessage: "";
+    document.getElementById('slackChannel').value = items.slackChannel ? items.slackChannel : '';
+    document.getElementById('slackClockInMessage').value = items.slackClockInMessage ? items.slackClockInMessage : '';
+    document.getElementById('slackClockOutMessage').value = items.slackClockOutMessage ? items.slackClockOutMessage: '';
+    document.getElementById('slackTakeABreakMessage').value = items.slackTakeABreakMessage ? items.slackTakeABreakMessage : '';
+    document.getElementById('slackBreakIsOverMessage').value = items.slackBreakIsOverMessage ? items.slackBreakIsOverMessage: '';
     items.slackApiType !== 'asUser' ? document.querySelector('[name=slackApiType][value=IncomingWebHooks]').checked = true : document.querySelector('[name=slackApiType][value=asUser]').checked = true
-    document.getElementById('slackToken').value = items.slackToken ? items.slackToken : "";
-    document.getElementById('slackWebHooksUrl').value = items.slackWebHooksUrl ? items.slackWebHooksUrl : "";
+    document.getElementById('slackToken').value = items.slackToken ? items.slackToken : '';
+    document.getElementById('slackWebHooksUrl').value = items.slackWebHooksUrl ? items.slackWebHooksUrl : '';
 
     document.getElementById('slackStatusEnabled').checked = items.slackStatusEnabled;
-    document.getElementById('slackClockInStatusEmoji').value = items.slackClockInStatusEmoji ? items.slackClockInStatusEmoji : "";
-    document.getElementById('slackClockInStatusText').value = items.slackClockInStatusText ? items.slackClockInStatusText : "";
-    document.getElementById('slackClockOutStatusEmoji').value = items.slackClockOutStatusEmoji ? items.slackClockOutStatusEmoji: "";
-    document.getElementById('slackClockOutStatusText').value = items.slackClockOutStatusText ? items.slackClockOutStatusText: "";
-    document.getElementById('slackTakeABreakStatusEmoji').value = items.slackTakeABreakStatusEmoji ? items.slackTakeABreakStatusEmoji: "";
-    document.getElementById('slackTakeABreakStatusText').value = items.slackTakeABreakStatusText ? items.slackTakeABreakStatusText: "";
-    document.getElementById('slackStatusToken').value = items.slackStatusToken ? items.slackStatusToken: "";
+    document.getElementById('slackClockInStatusEmoji').value = items.slackClockInStatusEmoji ? items.slackClockInStatusEmoji : '';
+    document.getElementById('slackClockInStatusText').value = items.slackClockInStatusText ? items.slackClockInStatusText : '';
+    document.getElementById('slackClockOutStatusEmoji').value = items.slackClockOutStatusEmoji ? items.slackClockOutStatusEmoji: '';
+    document.getElementById('slackClockOutStatusText').value = items.slackClockOutStatusText ? items.slackClockOutStatusText: '';
+    document.getElementById('slackTakeABreakStatusEmoji').value = items.slackTakeABreakStatusEmoji ? items.slackTakeABreakStatusEmoji: '';
+    document.getElementById('slackTakeABreakStatusText').value = items.slackTakeABreakStatusText ? items.slackTakeABreakStatusText: '';
+    document.getElementById('slackStatusToken').value = items.slackStatusToken ? items.slackStatusToken: '';
   });
 }
 
@@ -115,42 +115,60 @@ const postToSlack = () => {
         slackToken = document.getElementById('slackToken').value,
         slackWebHooksUrl = document.getElementById('slackWebHooksUrl').value;
 
-  const headers = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Access-Control-Allow-Origin': '*'
-  };
-
-  // Multiple channel post support
-  // For example, #ch1 #ch2 #ch3
-  [...new Set(slackChannel.split(' '))].forEach(c => {
-    const payload = {
-      'channel': c,
-      'text': slackClockInMessage ? slackClockInMessage : 'テスト'
-    };
-
-    let endpoint = slackWebHooksUrl;
-    if (slackApiType === 'asUser') {
-      endpoint = 'https://slack.com/api/chat.postMessage';
-      headers['Authorization'] = 'Bearer ' + slackToken;
-      payload['as_user'] = true;
-    }
-
-    const button = document.getElementById('slackTest');
-    button.classList.add("is-loading")
-
-    fetch(endpoint, {
-      'method': 'POST',
-      'headers': headers,
-      'body': JSON.stringify(payload)
-    })
-    .then((res) => res.json())
-    .then(console.log)
-    .catch(console.error)
-    .finally(() => {
-      button.classList.remove("is-loading")
+  if (slackApiType === 'asUser') {
+    // Multiple workspaces post support
+    [...new Set(slackToken.split(' '))].forEach(t => {
+      // Multiple channels post support
+      [...new Set(slackChannel.split(' '))].forEach(c => {
+        post('https://slack.com/api/chat.postMessage',
+          {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ' + t
+          },
+          {
+            'channel': c,
+            'text': slackClockInMessage ? slackClockInMessage : 'テスト',
+            'as_user': true
+          });
+      });
     });
-  });
+  } else {
+    // Multiple workspaces post support
+    [...new Set(slackWebHooksUrl.split(' '))].forEach(u => {
+      // Multiple channel post support
+      [...new Set(slackChannel.split(' '))].forEach(c => {
+        post(u,
+          {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+          },
+          {
+            'channel': c,
+            'text': slackClockInMessage ? slackClockInMessage : 'テスト'
+          });
+      });
+    });
+  }
 }
+
+const post = (endpoint, headers, payload) => {
+  const button = document.getElementById('slackTest');
+  button.classList.add('is-loading');
+
+  fetch(endpoint, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(console.log)
+  .catch(console.error)
+  .finally(() => {
+    button.classList.remove('is-loading');
+  });
+};
+
 
 const changeStatus = () => {
   const slackStatusEnabled = document.getElementById('slackStatusEnabled').checked,
@@ -178,7 +196,7 @@ const changeStatus = () => {
   let endpoint = 'https://slack.com/api/users.profile.set';
 
   const button = document.getElementById('slackStatusTest');
-  button.classList.add("is-loading")
+  button.classList.add('is-loading')
 
   fetch(endpoint, {
     'method': 'POST',
@@ -189,7 +207,7 @@ const changeStatus = () => {
   .then(console.log)
   .catch(console.error)
   .finally(() => {
-    button.classList.remove("is-loading")
+    button.classList.remove('is-loading')
   });
 }
 

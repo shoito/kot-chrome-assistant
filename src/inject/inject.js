@@ -83,28 +83,28 @@
   }, 100);
 
   chrome.storage.sync.get([
-    "debuggable",
+    'debuggable',
 
     // Message
-    "slackEnabled",
-    "slackChannel",
-    "slackClockInMessage",
-    "slackClockOutMessage",
-    "slackTakeABreakMessage",
-    "slackBreakIsOverMessage",
-    "slackApiType",
-    "slackToken",
-    "slackWebHooksUrl",
+    'slackEnabled',
+    'slackChannel',
+    'slackClockInMessage',
+    'slackClockOutMessage',
+    'slackTakeABreakMessage',
+    'slackBreakIsOverMessage',
+    'slackApiType',
+    'slackToken',
+    'slackWebHooksUrl',
 
     // Status
-    "slackStatusEnabled",
-    "slackClockInStatusEmoji",
-    "slackClockInStatusText",
-    "slackClockOutStatusEmoji",
-    "slackClockOutStatusText",
-    "slackTakeABreakStatusEmoji",
-    "slackTakeABreakStatusText",
-    "slackStatusToken"
+    'slackStatusEnabled',
+    'slackClockInStatusEmoji',
+    'slackClockInStatusText',
+    'slackClockOutStatusEmoji',
+    'slackClockOutStatusText',
+    'slackTakeABreakStatusEmoji',
+    'slackTakeABreakStatusText',
+    'slackStatusToken'
   ], (items) => {
     debuggable = items.debuggable;
 
@@ -152,34 +152,52 @@
   const postMessage = (message) => {
     if (!slackEnabled) return;
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    };
+    if (slackApiType === 'asUser') {
+      // Multiple workspaces post support
+      [...new Set(slackToken.split(' '))].forEach(t => {
+        // Multiple channels post support
+        [...new Set(slackChannel.split(' '))].forEach(c => {
+          post('https://slack.com/api/chat.postMessage',
+            {
+              'Content-Type': 'application/json; charset=utf-8',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': 'Bearer ' + t
+            },
+            {
+              'channel': c,
+              'text': message,
+              'as_user': true
+            });
+        });
+      });
+    } else {
+      // Multiple workspaces post support
+      [...new Set(slackWebHooksUrl.split(' '))].forEach(u => {
+        // Multiple channel post support
+        [...new Set(slackChannel.split(' '))].forEach(c => {
+          post(u,
+            {
+              'Content-Type': 'application/json; charset=utf-8',
+              'Access-Control-Allow-Origin': '*'
+            },
+            {
+              'channel': c,
+              'text': message
+            });
+        });
+      });
+    }
+  };
 
-    // Multiple channel post support
-    // For example, #ch1 #ch2 #ch3
-    [...new Set(slackChannel.split(' '))].forEach(c => {
-      const payload = {
-        'channel': c,
-        'text': message
-      };
-
-      let endpoint = slackWebHooksUrl;
-      if (slackApiType === 'asUser') {
-          endpoint = 'https://slack.com/api/chat.postMessage';
-          headers['Authorization'] = 'Bearer ' + slackToken;
-          payload['as_user'] = true;
-      }
-      fetch(endpoint, {
-        'method': 'POST',
-        'headers': headers,
-        'body': JSON.stringify(payload)
-      })
-      .then((res) => res.json())
-      .then(console.log)
-      .catch(console.error);
-    });
+  const post = (endpoint, headers, payload) => {
+    fetch(endpoint, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(console.log)
+    .catch(console.error);
   };
 
   const changeStatus = (status) => {
