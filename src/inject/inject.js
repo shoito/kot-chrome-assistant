@@ -8,7 +8,7 @@
 
   if (!setting) {
     console.log('Not Logged In. Please log in and reload this page.')
-    chrome.runtime.sendMessage('NOT_LOGGED_IN');
+    chrome.runtime.sendMessage({ contentScriptQuery: 'NOT_LOGGED_IN' });
     return;
   }
 
@@ -171,14 +171,15 @@
           headers['Authorization'] = 'Bearer ' + slackToken;
           payload['as_user'] = true;
       }
-      fetch(endpoint, {
-        'method': 'POST',
-        'headers': headers,
-        'body': JSON.stringify(payload)
-      })
-      .then((res) => res.json())
-      .then(console.log)
-      .catch(console.error);
+
+      chrome.runtime.sendMessage(
+        {
+          contentScriptQuery: 'postMessage',
+          headers: headers,
+          body: JSON.stringify(payload),
+          endpoint: endpoint,
+        }
+      );
     });
   };
 
@@ -214,14 +215,13 @@
     };
 
     let endpoint = 'https://slack.com/api/users.profile.set';
-
-    fetch(endpoint, {
-      'method': 'POST',
-      'headers': headers,
-      'body': JSON.stringify(payload)
-    })
-    .then((res) => res.json())
-    .then(console.log)
-    .catch(console.error);
+    chrome.runtime.sendMessage(
+      {
+        contentScriptQuery: 'changeStatus',
+        headers: headers,
+        body: JSON.stringify(payload),
+        endpoint: endpoint,
+      }
+    );
   }
 })();
