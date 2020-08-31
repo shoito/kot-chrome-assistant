@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.contentScriptQuery === 'postMessage'
-      || msg.contentScriptQuery === 'changeStatus') {
+  if (msg && (msg.contentScriptQuery === 'postMessage'
+      || msg.contentScriptQuery === 'changeStatus')) {
     fetch(msg.endpoint, {
       'method': 'POST',
       'headers': msg.headers,
