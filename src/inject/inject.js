@@ -62,22 +62,28 @@
     const buttons = setting.timerecorder.record_button,
           clockInButtonId = buttons.filter(b => b.mark === '1')[0].id,
           clockOutButtonId = buttons.filter(b => b.mark === '2')[0].id,
-          takeABreakButtonId = buttons.filter(b => b.mark === '0')[0].id,
-          breakIsOverButtonId = buttons.filter(b => b.mark === '0')[1].id;
+          breakButtons = buttons.filter(b => b.mark === '0');
 
     if (slackEnabled || slackStatusEnabled) {
       document.getElementById('record_' + clockInButtonId).addEventListener('click', clockIn, false);
       document.getElementById('record_' + clockOutButtonId).addEventListener('click', clockOut, false);
-      document.getElementById('record_' + takeABreakButtonId).addEventListener('click', takeABreak, false);
-      document.getElementById('record_' + breakIsOverButtonId).addEventListener('click', breakIsOver, false);
       console.log('Content Scripts is injected by KoT Chrome Assistant.');
 
       if (debuggable) {
         document.querySelector('footer').innerHTML = '<button id="testClockIn">出勤テスト</button><button id="testClockOut">退勤テスト</button><button id="testTakeABreak">休始テスト</button><button id="testBreakIsOver">休終テスト</button>'
         document.getElementById('testClockIn').addEventListener('click', clockIn, false);
         document.getElementById('testClockOut').addEventListener('click', clockOut, false);
-        document.getElementById('testTakeABreak').addEventListener('click', takeABreak, false);
-        document.getElementById('testBreakIsOver').addEventListener('click', breakIsOver, false);
+      }
+
+      if (breakButtons[0]) {
+        const takeABreakButtonId = breakButtons[0].id,
+              breakIsOverButtonId = breakButtons[1].id;
+        document.getElementById('record_' + takeABreakButtonId).addEventListener('click', takeABreak, false);
+        document.getElementById('record_' + breakIsOverButtonId).addEventListener('click', breakIsOver, false);
+        if (debuggable) {
+          document.getElementById('testTakeABreak').addEventListener('click', takeABreak, false);
+          document.getElementById('testBreakIsOver').addEventListener('click', breakIsOver, false);
+        }
       }
     }
   }, 100);
