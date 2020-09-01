@@ -56,7 +56,7 @@ const applySlackStatusOptions = () => {
   });
 }
 
-const restoreSlackOptions = () => {
+const restoreOptions = () => {
   chrome.storage.sync.get([
     "debuggable",
 
@@ -79,7 +79,10 @@ const restoreSlackOptions = () => {
     "slackClockOutStatusText",
     "slackTakeABreakStatusEmoji",
     "slackTakeABreakStatusText",
-    "slackStatusToken"
+    "slackStatusToken",
+
+    // KING OF TIME Domain
+    "s3Selected"
   ], (items) => {
     document.getElementById('debuggable').checked = items.debuggable;
 
@@ -101,6 +104,9 @@ const restoreSlackOptions = () => {
     document.getElementById('slackTakeABreakStatusEmoji').value = items.slackTakeABreakStatusEmoji ? items.slackTakeABreakStatusEmoji: "";
     document.getElementById('slackTakeABreakStatusText').value = items.slackTakeABreakStatusText ? items.slackTakeABreakStatusText: "";
     document.getElementById('slackStatusToken').value = items.slackStatusToken ? items.slackStatusToken: "";
+
+    document.getElementById('s2Selected').checked = !items.s3Selected;
+    document.getElementById('s3Selected').checked = items.s3Selected;
   });
 }
 
@@ -193,13 +199,21 @@ const changeStatus = () => {
   });
 }
 
-document.addEventListener('DOMContentLoaded', restoreSlackOptions);
+document.addEventListener('DOMContentLoaded', restoreOptions);
 
 document.getElementById('slackApply').addEventListener('click', applySlackOptions);
 document.getElementById('slackTest').addEventListener('click', postToSlack);
 
 document.getElementById('slackStatusApply').addEventListener('click', applySlackStatusOptions);
 document.getElementById('slackStatusTest').addEventListener('click', changeStatus);
+
+document.getElementById('s2Selected').addEventListener('change', () => {
+  chrome.storage.sync.set({s3Selected: false});
+});
+
+document.getElementById('s3Selected').addEventListener('change', () => {
+  chrome.storage.sync.set({s3Selected: true});
+});
 
 document.getElementById('debuggable').addEventListener('click', () => {
   chrome.storage.sync.set({debuggable: document.getElementById('debuggable').checked});
