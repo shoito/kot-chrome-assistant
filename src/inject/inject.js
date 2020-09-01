@@ -156,7 +156,7 @@
   };
 
   const postMessage = (message) => {
-    if (!slackEnabled) return;
+    if (!slackEnabled || !message || message.length === 0) return;
 
     const headers = {
       'Content-Type': 'application/json; charset=utf-8',
