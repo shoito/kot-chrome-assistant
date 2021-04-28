@@ -1,25 +1,23 @@
 (() => {
+  console.log("Content Scripts is injected by KoT Chrome Assistant.")
+
+  let allWorkTime = 0;
   let countable = 0;
-  document.querySelectorAll("td[data-ht-sort-index=ALL_WORK_MINUTE]").forEach(td => {
-    if (td.innerText) {
+  document.querySelectorAll("td[data-ht-sort-index=CUSTOM_DISPLAY_NAME_11]").forEach(td => {
+    const t = td.innerText;
+    if (t && !isNaN(t)) {
+      allWorkTime += parseFloat(t);
       countable++;
     }
   });
 
-  if (countable === 0) {
-    return;
-  }
-
-  console.log("Content Scripts is injected by KoT Chrome Assistant.")
-
-  const th_allWorkTime = document.querySelector("th.all_work_time")
-  const td_allWorkTime = document.querySelector("td.all_work_time")
+  const th_allWorkTime = document.querySelector("th.custom13")
+  const td_allWorkTime = document.querySelector("td.custom13")
 
   if (!(th_allWorkTime && td_allWorkTime)) {
     return;
   }
 
-  const allWorkTime = parseFloat(td_allWorkTime.innerText);
   const avgWorkTime = Math.round(allWorkTime * 100 / countable) / 100;
   console.log(`集計可能日数: ${countable}, 労働合計時間: ${allWorkTime}, 労働平均時間: ${avgWorkTime}`);
 
