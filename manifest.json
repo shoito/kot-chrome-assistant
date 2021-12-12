@@ -1,8 +1,8 @@
 {
   "name": "MyレコーダーChromeアシスタント",
   "short_name": "Myレコーダーアシスト",
-  "version": "0.6.0",
-  "manifest_version": 2,
+  "version": "0.7.0",
+  "manifest_version": 3,
   "description": "勤怠管理システム「Myレコーダー | KING OF TIME」を快適に使えるようにするための拡張機能です。",
   "icons": {
     "16": "icons/icon16.png",
@@ -13,17 +13,19 @@
     "page": "src/options/options.html",
     "open_in_tab": true
   },
-  "browser_action": {
+  "action": {
     "default_icon": "icons/icon19.png",
     "default_title": "Myレコーダーアシスタント",
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
     "https://s2.kingtime.jp/independent/recorder/personal/*",
     "https://s3.kingtime.jp/independent/recorder/personal/*",
     "https://slack.com/api/*",
-    "https://hooks.slack.com/services/*",
-    "storage"
+    "https://hooks.slack.com/services/*"
   ],
   "content_scripts": [
     {
@@ -38,7 +40,6 @@
     }
   ],
   "background": {
-    "scripts": ["src/background/background.js"],
-    "persistent": false
+    "service_worker": "src/background/background.js"
   }
 }
