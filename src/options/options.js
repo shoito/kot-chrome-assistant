@@ -82,7 +82,10 @@ const restoreOptions = () => {
     "slackStatusToken",
 
     // KING OF TIME Domain
-    "s3Selected"
+    "s3Selected",
+
+    // KING OF TIME Authentication
+    "samlSelected"
   ], (items) => {
     document.getElementById('debuggable').checked = items.debuggable;
 
@@ -107,6 +110,9 @@ const restoreOptions = () => {
 
     document.getElementById('s2Selected').checked = !items.s3Selected;
     document.getElementById('s3Selected').checked = items.s3Selected;
+
+    document.getElementById('accountSelected').checked = !items.samlSelected;
+    document.getElementById('samlSelected').checked = items.samlSelected;
   });
 }
 
@@ -213,6 +219,14 @@ document.getElementById('s2Selected').addEventListener('change', () => {
 
 document.getElementById('s3Selected').addEventListener('change', () => {
   chrome.storage.sync.set({s3Selected: true});
+});
+
+document.getElementById('accountSelected').addEventListener('change', () => {
+  chrome.storage.sync.set({samlSelected: false});
+});
+
+document.getElementById('samlSelected').addEventListener('change', () => {
+  chrome.storage.sync.set({samlSelected: true});
 });
 
 document.getElementById('debuggable').addEventListener('click', () => {
