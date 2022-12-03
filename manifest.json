@@ -19,8 +19,7 @@
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
-    "storage",
-    "geolocation"
+    "storage"
   ],
   "host_permissions": [
     "https://s2.kingtime.jp/independent/recorder/personal/*",

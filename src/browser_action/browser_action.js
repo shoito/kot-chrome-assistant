@@ -2,29 +2,13 @@ let myrecUrl = "https://s2.kingtime.jp/independent/recorder/personal/";
 
 const replaceMyrecToNeed = () => {
   chrome.storage.sync.get(["s3Selected", "samlSelected"], (items) => {
-    if (items.s3Selected) {
-      if (items.samlSelected) {
-        const iframe = document.querySelector("#myrec iframe");
-        if (iframe) {
-          myrecUrl = "https://s3.ta.kingoftime.jp/independent/recorder2/personal/";
-          iframe.src = myrecUrl;
-        }
-        return
-      }
-      const iframe = document.querySelector("#myrec iframe");
-      if (iframe) {
-        myrecUrl = "https://s3.kingtime.jp/independent/recorder/personal/";
-        iframe.src = myrecUrl;
-      }
-      return;
-    }
-    if (items.samlSelected) {
-      const iframe = document.querySelector("#myrec iframe");
-      if (iframe) {
-        myrecUrl = "https://s2.ta.kingoftime.jp/independent/recorder2/personal/";
-        iframe.src = myrecUrl;
-      }
-      return
+    const iframe = document.querySelector("#myrec iframe");
+    if (iframe && (items.s3Selected || items.samlSelected)) {
+      const secondLevelDomain = !items.samlSelected ? "kingtime.jp" : "ta.kingoftime.jp";
+      const subdomain = !items.s3Selected ? "s2" : "s3";
+
+      myrecUrl = `https://${subdomain}.${secondLevelDomain}/independent/recorder2/personal/`;
+      iframe.src = myrecUrl;
     }
   });
 };
