@@ -4,10 +4,11 @@ const replaceMyrecToNeed = () => {
   chrome.storage.sync.get(["s3Selected", "samlSelected"], (items) => {
     const iframe = document.querySelector("#myrec iframe");
     if (iframe && (items.s3Selected || items.samlSelected)) {
-      const secondLevelDomain = !items.samlSelected ? "kingtime.jp" : "ta.kingoftime.jp";
       const subdomain = !items.s3Selected ? "s2" : "s3";
+      const secondLevelDomain = !items.samlSelected ? "kingtime.jp" : "ta.kingoftime.jp";
+      const recorder = !items.samlSelected ? "recorder" : "recorder2"
 
-      myrecUrl = `https://${subdomain}.${secondLevelDomain}/independent/recorder2/personal/`;
+      myrecUrl = `https://${subdomain}.${secondLevelDomain}/independent/${recorder}/personal/`;
       iframe.src = myrecUrl;
     }
   });
