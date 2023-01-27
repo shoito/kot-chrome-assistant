@@ -40,12 +40,15 @@
       todayHistoryItem = localStorage.getItem('PARSONAL_BROWSER_RECORDER@RECORD_HISTORY_' + setting.user.user_token),
       todayHistories = JSON.parse(todayHistoryItem ? todayHistoryItem : '[]').filter(i => i.send_timestamp.startsWith(today)),
       isClockedIn = todayHistories.some(h=>h.name === '出勤'),
-      isClockedOut = todayHistories.some(h=>h.name === '退勤');
+      isClockedOut = todayHistories.some(h=>h.name === '退勤'),
+      isBreakStart = todayHistories[0]?.name === '休始';
 
   let intervalCount = 0;
   const interval = setInterval(() => {
     const clockInButton = document.querySelector('.record-clock-in'),
-          clockOutButton = document.querySelector('.record-clock-out');
+          clockOutButton = document.querySelector('.record-clock-out'),
+          breakStartButton = [...document.querySelectorAll(".record-btn-inner")].filter(v=>v.textContent==="休始")[0],
+          breakFinishButton = [...document.querySelectorAll(".record-btn-inner")].filter(v=>v.textContent==="休終")[0];
 
     if (!(clockInButton && clockOutButton)) {
       if (++intervalCount > 30) {
@@ -58,6 +61,12 @@
 
     if (isClockedIn) clockInButton.style.opacity = 0.3;
     if (isClockedOut) clockOutButton.style.opacity = 0.3;
+
+    if (breakStartButton && breakFinishButton) {
+      if (isBreakStart) clockOutButton.style.opacity = 0.3;
+      if (!isClockedIn || isClockedOut || (isClockedIn && isBreakStart) ) breakStartButton.style.opacity = 0.3;
+      if (!isBreakStart) breakFinishButton.style.opacity = 0.3;
+    }
 
     const buttons = setting.timerecorder.record_button,
           clockInButtonId = buttons.filter(b => b.mark === '1')[0].id,
