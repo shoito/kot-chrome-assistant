@@ -117,93 +117,86 @@ const restoreOptions = () => {
 }
 
 const postToSlack = () => {
-  const slackEnabled = document.getElementById('slackEnabled').checked,
-        slackChannel = document.getElementById('slackChannel').value,
+  const slackChannel = document.getElementById('slackChannel').value,
         slackClockInMessage = document.getElementById('slackClockInMessage').value,
-        slackClockOutMessage = document.getElementById('slackClockOutMessage').value,
-        slackTakeABreakMessage = document.getElementById('slackTakeABreakMessage').value,
-        slackBreakIsOverMessage = document.getElementById('slackBreakIsOverMessage').value,
         slackApiType = document.querySelector('[name=slackApiType]:checked').value,
         slackToken = document.getElementById('slackToken').value,
         slackWebHooksUrl = document.getElementById('slackWebHooksUrl').value;
 
-  const headers = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Access-Control-Allow-Origin': '*'
-  };
-
-  // Multiple channel post support
-  // For example, #ch1 #ch2 #ch3
-  [...new Set(slackChannel.split(' '))].forEach(c => {
-    const payload = {
-      'channel': c,
-      'text': slackClockInMessage ? slackClockInMessage : 'テスト'
-    };
-
-    let endpoint = slackWebHooksUrl;
-    if (slackApiType === 'asUser') {
-      endpoint = 'https://slack.com/api/chat.postMessage';
-      headers['Authorization'] = 'Bearer ' + slackToken;
-      payload['as_user'] = true;
+  if (slackApiType === 'asUser') {
+    const slackTokens = slackToken.split(' '); // Multiple workspaces post support
+    const slackChannels = slackChannel.split(' ');  // For example, #ch1 #ch2 #ch3
+    for (let i = 0; i < slackTokens.length; i++) {
+      post('https://slack.com/api/chat.postMessage',
+        {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Bearer ' + slackTokens[i]
+        },
+        {
+          'channel': slackChannels[i],
+          'text': slackClockInMessage ? slackClockInMessage : 'テスト',
+          'as_user': true
+        }
+      );
     }
-
-    const button = document.getElementById('slackTest');
-    button.classList.add("is-loading")
-
-    fetch(endpoint, {
-      'method': 'POST',
-      'headers': headers,
-      'body': JSON.stringify(payload)
-    })
-    .then((res) => res.json())
-    .then(console.log)
-    .catch(console.error)
-    .finally(() => {
-      button.classList.remove("is-loading")
-    });
-  });
+  } else {
+    const slackWebHooksUrls = slackWebHooksUrl.split(' '); // Multiple workspaces post support
+    const slackChannels = slackChannel.split(' '); // For example, #ch1 #ch2 #ch3
+    for (let i = 0; i < slackWebHooksUrls.length; i++) {
+      post(slackWebHooksUrls[i],
+        {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        },
+        {
+          'channel': slackChannels[i],
+          'text': slackClockInMessage ? slackClockInMessage : 'テスト'
+        }
+      );
+    }
+  }
 }
 
 const changeStatus = () => {
-  const slackStatusEnabled = document.getElementById('slackStatusEnabled').checked,
-        slackClockInStatusEmoji = document.getElementById('slackClockInStatusEmoji').value,
+  const slackClockInStatusEmoji = document.getElementById('slackClockInStatusEmoji').value,
         slackClockInStatusText = document.getElementById('slackClockInStatusText').value,
-        slackClockOutStatusEmoji = document.getElementById('slackClockOutStatusEmoji').value,
-        slackClockOutStatusText = document.getElementById('slackClockOutStatusText').value,
-        slackTakeABreakStatusEmoji = document.getElementById('slackTakeABreakStatusEmoji').value,
-        slackTakeABreakStatusText = document.getElementById('slackTakeABreakStatusText').value,
         slackStatusToken = document.getElementById('slackStatusToken').value;
 
-  const headers = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Access-Control-Allow-Origin': '*',
-    'Authorization': 'Bearer ' + slackStatusToken
-  },
-  payload = {
-    'profile': {
-      'status_emoji': slackClockInStatusEmoji !== '' ? slackClockInStatusEmoji : ':office:',
-      'status_text': slackClockInStatusText !== '' ? slackClockInStatusText : '仕事中',
-      'status_expiration': 0
-    }
-  };
+  const slackStatusTokens = slackStatusToken.split(' '); // Multiple workspaces post support
+  for(let i = 0; i < slackStatusTokens.length; i++) {
+    post('https://slack.com/api/users.profile.set',
+    {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': 'Bearer ' + slackStatusTokens[i]
+    },
+    {
+      'profile': {
+        'status_emoji': slackClockInStatusEmoji !== '' ? slackClockInStatusEmoji : ':office:',
+        'status_text': slackClockInStatusText !== '' ? slackClockInStatusText : '仕事中',
+        'status_expiration': 0
+      }
+    },
+    'slackStatusTest');
+  }
+}
 
-  let endpoint = 'https://slack.com/api/users.profile.set';
-
-  const button = document.getElementById('slackStatusTest');
-  button.classList.add("is-loading")
-
+const post = (endpoint, headers, payload, buttonId = 'slackTest') => {
+  const button = document.getElementById(buttonId);
+  button.classList.add('is-loading');
   fetch(endpoint, {
-    'method': 'POST',
-    'headers': headers,
-    'body': JSON.stringify(payload)
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload)
   })
-  .then((res) => res.json())
+  .then(res => res.json())
   .then(console.log)
   .catch(console.error)
   .finally(() => {
-    button.classList.remove("is-loading")
+    button.classList.remove('is-loading');
   });
-}
+};
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
 
