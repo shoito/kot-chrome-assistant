@@ -126,12 +126,12 @@ const postToSlack = () => {
   if (slackApiType === 'asUser') {
     const slackTokens = slackToken.split(' '); // Multiple workspaces post support
     const slackChannels = slackChannel.split(' ');  // For example, #ch1 #ch2 #ch3
-    for (let i = 0; i < slackTokens.length; i++) {
+    for (let i = 0; i < slackChannels.length; i++) {
       post('https://slack.com/api/chat.postMessage',
         {
           'Content-Type': 'application/json; charset=utf-8',
           'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer ' + slackTokens[i]
+          'Authorization': 'Bearer ' + (slackTokens.length > 1 ? slackTokens[i] : slackTokens[0])
         },
         {
           'channel': slackChannels[i],
@@ -143,7 +143,7 @@ const postToSlack = () => {
   } else {
     const slackWebHooksUrls = slackWebHooksUrl.split(' '); // Multiple workspaces post support
     const slackChannels = slackChannel.split(' '); // For example, #ch1 #ch2 #ch3
-    for (let i = 0; i < slackWebHooksUrls.length; i++) {
+    for (let i = 0; i < slackChannels.length; i++) {
       post(slackWebHooksUrls[i],
         {
           'Content-Type': 'application/json; charset=utf-8',

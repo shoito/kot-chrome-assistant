@@ -167,22 +167,17 @@
   const postMessage = (message) => {
     if (!slackEnabled || !message || message.length === 0) return;
 
-    const headers = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Access-Control-Allow-Origin': '*'
-    };
-
     if (slackApiType === 'asUser') {
       const slackTokens = slackToken.split(' '); // Multiple workspaces post support
       const slackChannels = slackChannel.split(' '); // Multiple channels post support
-      for (let i = 0; i < slackTokens.length; i++) {
+      for (let i = 0; i < slackChannels.length; i++) {
         chrome.runtime.sendMessage(
           {
             contentScriptQuery: 'postMessage',
             headers: {
               'Content-Type': 'application/json; charset=utf-8',
               'Access-Control-Allow-Origin': '*',
-              'Authorization': 'Bearer ' + slackTokens[i]
+              'Authorization': 'Bearer ' + (slackTokens.length > 1 ? slackTokens[i] : slackTokens[0])
             },
             body: JSON.stringify({
               'channel': slackChannels[i],
@@ -196,7 +191,7 @@
     } else {
        const slackWebHooksUrls = slackWebHooksUrl.split(' '); // Multiple workspaces post support
        const slackChannels = slackChannel.split(' '); // Multiple channels post support
-       for(let i = 0; i < slackWebHooksUrls.length; i++) {
+       for(let i = 0; i < slackChannels.length; i++) {
         chrome.runtime.sendMessage(
           {
             contentScriptQuery: 'postMessage',
