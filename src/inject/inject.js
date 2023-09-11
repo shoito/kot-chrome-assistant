@@ -167,35 +167,47 @@
   const postMessage = (message) => {
     if (!slackEnabled || !message || message.length === 0) return;
 
-    const headers = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Access-Control-Allow-Origin': '*'
-    };
-
-    // Multiple channel post support
-    // For example, #ch1 #ch2 #ch3
-    [...new Set(slackChannel.split(' '))].forEach(c => {
-      const payload = {
-        'channel': c,
-        'text': message
-      };
-
-      let endpoint = slackWebHooksUrl;
-      if (slackApiType === 'asUser') {
-          endpoint = 'https://slack.com/api/chat.postMessage';
-          headers['Authorization'] = 'Bearer ' + slackToken;
-          payload['as_user'] = true;
+    if (slackApiType === 'asUser') {
+      const slackTokens = slackToken.split(' '); // Multiple workspaces post support
+      const slackChannels = slackChannel.split(' '); // Multiple channels post support
+      for (let i = 0; i < slackChannels.length; i++) {
+        chrome.runtime.sendMessage(
+          {
+            contentScriptQuery: 'postMessage',
+            headers: {
+              'Content-Type': 'application/json; charset=utf-8',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': 'Bearer ' + (slackTokens.length > 1 ? slackTokens[i] : slackTokens[0])
+            },
+            body: JSON.stringify({
+              'channel': slackChannels[i],
+              'text': message,
+              'as_user': true
+            }),
+            endpoint: 'https://slack.com/api/chat.postMessage',
+          }
+        );
       }
-
-      chrome.runtime.sendMessage(
-        {
-          contentScriptQuery: 'postMessage',
-          headers: headers,
-          body: JSON.stringify(payload),
-          endpoint: endpoint,
-        }
-      );
-    });
+    } else {
+       const slackWebHooksUrls = slackWebHooksUrl.split(' '); // Multiple workspaces post support
+       const slackChannels = slackChannel.split(' '); // Multiple channels post support
+       for(let i = 0; i < slackChannels.length; i++) {
+        chrome.runtime.sendMessage(
+          {
+            contentScriptQuery: 'postMessage',
+            headers: {
+              'Content-Type': 'application/json; charset=utf-8',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+              'channel': slackChannels[i],
+              'text': message
+            }),
+            endpoint: slackWebHooksUrls[i],
+          }
+        );
+       }
+    }
   };
 
   const changeStatus = (status) => {
@@ -216,27 +228,26 @@
       statusText = slackClockInStatusText;
     }
 
-    const headers = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Access-Control-Allow-Origin': '*',
-      'Authorization': 'Bearer ' + slackStatusToken
-    },
-    payload = {
-      'profile': {
-        'status_emoji': statusEmoji,
-        'status_text': statusText,
-        'status_expiration': 0
-      }
-    };
-
-    let endpoint = 'https://slack.com/api/users.profile.set';
-    chrome.runtime.sendMessage(
-      {
-        contentScriptQuery: 'changeStatus',
-        headers: headers,
-        body: JSON.stringify(payload),
-        endpoint: endpoint,
-      }
-    );
+    const slackStatusTokens = slackStatusToken.split(' '); // Multiple workspaces post support
+    for (let i = 0; i < slackStatusTokens.length; i++) {
+      chrome.runtime.sendMessage(
+        {
+          contentScriptQuery: 'changeStatus',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ' + slackStatusTokens[i]
+          },
+          body: JSON.stringify({
+            'profile': {
+              'status_emoji': statusEmoji,
+              'status_text': statusText,
+              'status_expiration': 0
+            }
+          }),
+          endpoint: 'https://slack.com/api/users.profile.set',
+        }
+      );
+    }
   }
 })();
