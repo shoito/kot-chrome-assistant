@@ -26,6 +26,10 @@ const applySlackOptions = () => {
       button.classList.remove("is-loading")
     }, 750);
   });
+
+  if(!slackEnabled){
+    alert('有効にするチェックが入っていません。');
+  }
 }
 
 const applySlackStatusOptions = () => {
@@ -54,6 +58,11 @@ const applySlackStatusOptions = () => {
       button.classList.remove("is-loading")
     }, 750);
   });
+
+  if(!slackStatusEnabled){
+    alert('有効にするチェックが入っていません。');
+  }
+
 }
 
 const restoreOptions = () => {
