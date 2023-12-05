@@ -38,6 +38,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/shoito"><img src="https://avatars.githubusercontent.com/u/37051?v=4?s=100" width="100px;" alt="shoito"/><br /><sub><b>shoito</b></sub></a><br /><a href="https://github.com/shoito/kot-chrome-assistant/commits?author=shoito" title="Documentation">📖</a> <a href="#business-shoito" title="Business development">💼</a> <a href="https://github.com/shoito/kot-chrome-assistant/commits?author=shoito" title="Code">💻</a> <a href="#design-shoito" title="Design">🎨</a> <a href="#ideas-shoito" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://cti1650-portfolio-site.vercel.app/"><img src="https://avatars.githubusercontent.com/u/15701307?v=4?s=100" width="100px;" alt="cti1650"/><br /><sub><b>cti1650</b></sub></a><br /><a href="https://github.com/shoito/kot-chrome-assistant/commits?author=cti1650" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>

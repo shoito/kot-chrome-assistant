@@ -22,6 +22,15 @@
         "design",
         "ideas"
       ]
+    },
+    {
+      "login": "cti1650",
+      "name": "cti1650",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15701307?v=4",
+      "profile": "https://cti1650-portfolio-site.vercel.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
