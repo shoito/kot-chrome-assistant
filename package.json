@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "zip": "zip -r kot-chrome-assistant.zip . -x *.git* -x docs/**/* -x *.zip"
+    "zip": "zip -r kot-chrome-assistant.zip . -x *.git* -x docs/**/* -x *.zip -x .all-contributorsrc -x test/**/*"
   },
   "repository": {
     "type": "git",
