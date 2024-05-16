@@ -3,7 +3,7 @@
 Chromeウェブストア - MyレコーダーChromeアシスタント・ページ
 https://chrome.google.com/webstore/detail/pifbdpooppfkllaiobkaoeocbfmpabaj/
 
-勤怠管理システム「[Myレコーダー | KING OF TIME](https://www.kingtime.jp/record/myrecorder/)」を快適に使えるようにするためのChrome拡張です。
+勤怠管理システム「[Myレコーダー | KING OF TIME](https://kingoftime.jp/record/myrecorder/)」を快適に使えるようにするためのChrome拡張です。
 
 ## ブラウザの専用ボタンからポップアップ表示
 ブックマークからMyレコーダーページを開くことすら面倒な人向けに、ポップアップ表示して、素早く出勤や退勤できるようにします。

@@ -31,8 +31,8 @@
     }]
   },
   "host_permissions": [
-    "https://s2.kingtime.jp/independent/recorder/personal/*",
-    "https://s3.kingtime.jp/independent/recorder/personal/*",
+    "https://s2.ta.kingoftime.jp/independent/recorder/personal/*",
+    "https://s3.ta.kingoftime.jp/independent/recorder/personal/*",
     "https://slack.com/api/*",
     "https://hooks.slack.com/services/*"
   ],
