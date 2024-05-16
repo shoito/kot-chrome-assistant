@@ -5,10 +5,9 @@ const replaceMyrecToNeed = () => {
     const iframe = document.querySelector("#myrec iframe");
     if (iframe && (items.s3Selected || items.samlSelected)) {
       const subdomain = !items.s3Selected ? "s2" : "s3";
-      const secondLevelDomain = !items.samlSelected ? "kingtime.jp" : "ta.kingoftime.jp";
       const recorder = !items.samlSelected ? "recorder" : "recorder2"
 
-      myrecUrl = `https://${subdomain}.${secondLevelDomain}/independent/${recorder}/personal/`;
+      myrecUrl = `https://${subdomain}.ta.kingoftime.jp/independent/${recorder}/personal/`;
       iframe.src = myrecUrl;
     }
   });
