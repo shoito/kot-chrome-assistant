@@ -1,4 +1,4 @@
-let myrecUrl = "https://s2.kingtime.jp/independent/recorder/personal/";
+let myrecUrl = "https://s2.ta.kingoftime.jp/independent/recorder/personal/";
 
 const replaceMyrecToNeed = () => {
   chrome.storage.sync.get(["s3Selected", "samlSelected"], (items) => {
