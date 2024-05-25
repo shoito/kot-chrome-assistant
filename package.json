@@ -6,7 +6,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "zip": "zip -r kot-chrome-assistant.zip . -x *.git* -x docs/**/* -x *.zip -x .all-contributorsrc -x test/**/*"
+    "zip": "zip -r kot-chrome-assistant.zip . -x *.git* -x docs/**/* -x *.zip -x .all-contributorsrc -x test/**/*",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "repository": {
     "type": "git",
@@ -17,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/shoito/kot-chrome-assistant/issues"
   },
-  "homepage": "https://github.com/shoito/kot-chrome-assistant#readme"
+  "homepage": "https://github.com/shoito/kot-chrome-assistant#readme",
+  "devDependencies": {
+    "all-contributors-cli": "^6.26.1"
+  }
 }
