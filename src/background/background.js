@@ -47,3 +47,35 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   sendResponse({ 'status': 'listener is missing.\n' + msg });
   return true;
 });
+
+chrome.runtime.onInstalled.addListener(function() {
+  chrome.storage.sync.get('openInNewTab', function(data) {
+    if (data.openInNewTab) {
+      chrome.action.setPopup({ popup: '' });
+    } else {
+      chrome.action.setPopup({ popup: 'src/browser_action/browser_action.html' });
+    }
+  });
+});
+
+chrome.action.onClicked.addListener(function() {
+  let myrecUrl = "https://s2.ta.kingoftime.jp/independent/recorder/personal/";
+
+  chrome.storage.sync.get('openInNewTab', function(data) {
+    if (data.openInNewTab) {
+      chrome.storage.sync.get(["s3Selected", "samlSelected"], (items) => {
+        if (items.s3Selected || items.samlSelected) {
+          const subdomain = !items.s3Selected ? "s2" : "s3";
+          const recorder = !items.samlSelected ? "recorder" : "recorder2"
+    
+          myrecUrl = `https://${subdomain}.ta.kingoftime.jp/independent/${recorder}/personal/`;
+          chrome.tabs.create({ url: myrecUrl }).catch(function(e){console.log(e.message)});
+        } else {
+          chrome.tabs.create({ url: myrecUrl }).catch(function(e){console.log(e.message)});
+        }
+      });
+    } else {
+      chrome.action.openPopup();
+    }
+  });
+});

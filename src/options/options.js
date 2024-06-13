@@ -94,7 +94,10 @@ const restoreOptions = () => {
     "s3Selected",
 
     // KING OF TIME Authentication
-    "samlSelected"
+    "samlSelected",
+
+    // Open in new tab
+    "openInNewTab"
   ], (items) => {
     document.getElementById('debuggable').checked = items.debuggable;
 
@@ -122,6 +125,9 @@ const restoreOptions = () => {
 
     document.getElementById('accountSelected').checked = !items.samlSelected;
     document.getElementById('samlSelected').checked = items.samlSelected;
+
+    document.getElementById('openInPopupSelected').checked = !items.openInNewTab;
+    document.getElementById('openInNewTabSelected').checked = items.openInNewTab;
   });
 }
 
@@ -229,6 +235,16 @@ document.getElementById('accountSelected').addEventListener('change', () => {
 
 document.getElementById('samlSelected').addEventListener('change', () => {
   chrome.storage.sync.set({samlSelected: true});
+});
+
+document.getElementById('openInPopupSelected').addEventListener('change', () => {
+  chrome.storage.sync.set({openInNewTab: false});
+  chrome.action.setPopup({ popup: 'src/browser_action/browser_action.html' });
+});
+
+document.getElementById('openInNewTabSelected').addEventListener('change', () => {
+  chrome.storage.sync.set({openInNewTab: true});
+  chrome.action.setPopup({ popup: '' });
 });
 
 document.getElementById('debuggable').addEventListener('click', () => {
