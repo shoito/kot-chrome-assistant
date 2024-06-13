@@ -1,7 +1,7 @@
 {
   "name": "MyレコーダーChromeアシスタント",
   "short_name": "Myレコーダーアシスト",
-  "version": "0.9.2.5",
+  "version": "0.9.3",
   "manifest_version": 3,
   "description": "勤怠管理システム「Myレコーダー | KING OF TIME」を快適に使えるようにするための拡張機能です。",
   "icons": {
