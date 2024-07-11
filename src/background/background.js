@@ -28,6 +28,10 @@ const validateEndpoint = (endpoint) => {
   return whitelist.some((l) => endpoint.startsWith(l));
 };
 
+const setPopup = (enabled) => {
+  chrome.action.setPopup({ popup: enabled ? 'src/browser_action/browser_action.html' : '' });
+};
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (!msg) {
     sendResponse({ 'status': 'listener is missing.\n' + msg });
@@ -48,13 +52,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   return true;
 });
 
+
 chrome.runtime.onInstalled.addListener(function () {
   chrome.storage.sync.get('openInNewTab', function (data) {
-    if (data.openInNewTab) {
-      chrome.action.setPopup({ popup: '' });
-    } else {
-      chrome.action.setPopup({ popup: 'src/browser_action/browser_action.html' });
-    }
+    setPopup(!data.openInNewTab);
+  });
+});
+
+chrome.runtime.onStartup.addListener(function () {
+  chrome.storage.sync.get('openInNewTab', function (data) {
+    setPopup(!data.openInNewTab);
   });
 });
 
@@ -62,9 +69,9 @@ chrome.action.onClicked.addListener(function () {
   let myrecUrl = "https://s2.ta.kingoftime.jp/independent/recorder/personal/";
 
   chrome.storage.sync.get(["openInNewTab", "s3Selected", "samlSelected"], (items) => {
-    if (items.openInNewTab) {
-      chrome.action.setPopup({ popup: '' });
+    setPopup(!items.openInNewTab);
 
+    if (items.openInNewTab) {
       if (items.s3Selected || items.samlSelected) {
         const subdomain = !items.s3Selected ? "s2" : "s3";
         const recorder = !items.samlSelected ? "recorder" : "recorder2"
@@ -79,8 +86,6 @@ chrome.action.onClicked.addListener(function () {
           chrome.tabs.create({ url: myrecUrl }).catch(function (e) { console.log(e.message) });
         }
       });
-    } else {
-      chrome.action.setPopup({ popup: 'src/browser_action/browser_action.html' });
     }
   });
 });
