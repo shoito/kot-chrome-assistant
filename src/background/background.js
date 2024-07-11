@@ -63,6 +63,8 @@ chrome.action.onClicked.addListener(function () {
 
   chrome.storage.sync.get(["openInNewTab", "s3Selected", "samlSelected"], (items) => {
     if (items.openInNewTab) {
+      chrome.action.setPopup({ popup: '' });
+
       if (items.s3Selected || items.samlSelected) {
         const subdomain = !items.s3Selected ? "s2" : "s3";
         const recorder = !items.samlSelected ? "recorder" : "recorder2"
@@ -78,7 +80,7 @@ chrome.action.onClicked.addListener(function () {
         }
       });
     } else {
-      chrome.action.openPopup();
+      chrome.action.setPopup({ popup: 'src/browser_action/browser_action.html' });
     }
   });
 });
