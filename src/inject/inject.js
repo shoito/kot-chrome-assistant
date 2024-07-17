@@ -59,8 +59,8 @@
 
     clearInterval(interval);
 
-    if (isClockedIn) clockInButton.style.opacity = 0.3;
-    if (isClockedOut) clockOutButton.style.opacity = 0.3;
+    if (isClockedIn) clockInButton.style.opacity = 0.5;
+    if (isClockedOut || !isClockedIn) clockOutButton.style.opacity = 0.5;
 
     if (breakStartButton && breakFinishButton) {
       if (isBreakStart) clockOutButton.style.opacity = 0.3;
