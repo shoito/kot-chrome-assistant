@@ -1,7 +1,7 @@
 {
   "name": "MyレコーダーChromeアシスタント",
   "short_name": "Myレコーダーアシスト",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "manifest_version": 3,
   "description": "勤怠管理システム「Myレコーダー | KING OF TIME」を快適に使えるようにするための拡張機能です。",
   "icons": {
@@ -31,20 +31,16 @@
     }]
   },
   "host_permissions": [
-    "https://s2.ta.kingoftime.jp/independent/recorder/personal/*",
-    "https://s3.ta.kingoftime.jp/independent/recorder/personal/*",
-    "https://s2.ta.kingoftime.jp/independent/recorder2/personal/*",
-    "https://s3.ta.kingoftime.jp/independent/recorder2/personal/*",
+    "https://*.ta.kingoftime.jp/independent/recorder/personal/*",
+    "https://*.ta.kingoftime.jp/independent/recorder2/personal/*",
     "https://slack.com/api/*",
     "https://hooks.slack.com/services/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://s2.ta.kingoftime.jp/independent/recorder/personal/*",
-        "https://s3.ta.kingoftime.jp/independent/recorder/personal/*",
-        "https://s2.ta.kingoftime.jp/independent/recorder2/personal/*",
-        "https://s3.ta.kingoftime.jp/independent/recorder2/personal/*"
+        "https://*.ta.kingoftime.jp/independent/recorder/personal/*",
+        "https://*.ta.kingoftime.jp/independent/recorder2/personal/*"
       ],
       "js": [
         "src/inject/inject.js"

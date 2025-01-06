@@ -91,7 +91,9 @@ const restoreOptions = () => {
     "slackStatusToken",
 
     // KING OF TIME Domain
+    "s2Selected",
     "s3Selected",
+    "s4Selected",
 
     // KING OF TIME Authentication
     "samlSelected",
@@ -120,8 +122,9 @@ const restoreOptions = () => {
     document.getElementById('slackTakeABreakStatusText').value = items.slackTakeABreakStatusText ? items.slackTakeABreakStatusText: "";
     document.getElementById('slackStatusToken').value = items.slackStatusToken ? items.slackStatusToken: "";
 
-    document.getElementById('s2Selected').checked = !items.s3Selected;
+    document.getElementById('s2Selected').checked = items.s2Selected || (!items.s3Selected && !items.s4Selected);
     document.getElementById('s3Selected').checked = items.s3Selected;
+    document.getElementById('s4Selected').checked = items.s4Selected;
 
     document.getElementById('accountSelected').checked = !items.samlSelected;
     document.getElementById('samlSelected').checked = items.samlSelected;
@@ -222,11 +225,15 @@ document.getElementById('slackStatusApply').addEventListener('click', applySlack
 document.getElementById('slackStatusTest').addEventListener('click', changeStatus);
 
 document.getElementById('s2Selected').addEventListener('change', () => {
-  chrome.storage.sync.set({s3Selected: false});
+  chrome.storage.sync.set({s2Selected: true, s3Selected: false, s4Selected: false});
 });
 
 document.getElementById('s3Selected').addEventListener('change', () => {
-  chrome.storage.sync.set({s3Selected: true});
+  chrome.storage.sync.set({s2Selected: false, s3Selected: true, s4Selected: false});
+});
+
+document.getElementById('s4Selected').addEventListener('change', () => {
+  chrome.storage.sync.set({s2Selected: false, s3Selected: false, s4Selected: true});
 });
 
 document.getElementById('accountSelected').addEventListener('change', () => {

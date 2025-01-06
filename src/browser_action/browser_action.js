@@ -1,10 +1,15 @@
 let myrecUrl = "https://s2.ta.kingoftime.jp/independent/recorder/personal/";
 
 const replaceMyrecToNeed = () => {
-  chrome.storage.sync.get(["s3Selected", "samlSelected"], (items) => {
+  chrome.storage.sync.get(["s3Selected", "s4Selected", "samlSelected"], (items) => {
     const iframe = document.querySelector("#myrec iframe");
-    if (iframe && (items.s3Selected || items.samlSelected)) {
-      const subdomain = !items.s3Selected ? "s2" : "s3";
+    if (iframe && (items.s3Selected || items.s4Selected || items.samlSelected)) {
+      let subdomain = "s2";
+      if (items.s3Selected) {
+        subdomain = "s3";
+      } else if (items.s4Selected) {
+        subdomain = "s4";
+      }
       const recorder = !items.samlSelected ? "recorder" : "recorder2"
 
       myrecUrl = `https://${subdomain}.ta.kingoftime.jp/independent/${recorder}/personal/`;
